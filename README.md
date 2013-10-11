@@ -8,6 +8,33 @@ The prediction is done via a webservice running on an EC2 instance running ubunt
 ###How it's Served
 The FastRWeb package takes a .R file (fp_classifier.R in my case) with a "run" function and makes it available via the web. I use this to submit text and return a classification... <http://174.129.49.183/cgi-bin/R/fp_classifier?text=I%20ate%20some%20bad%20food%20at%20lunch%20and%20think%20I%20have%20food%20poisoning>
 
+####Setup Guide from Alden
+1. Create Amazon EC2 instance running Amazon Linux  
+	Add security groups allowing SSH and HTTP  
+	Add an elastic IP and write it down  
+2. Install necessary packages 
+	yum install httpd R libXt libXt-devel cairo-devel git-core    
+3. Start R and install necessary packages  
+	install.packages("textcat")  
+	install.packages("RMongo")  
+	install.packages("stringr")  
+	install.packages("Rserve")  
+	install.packages("FastRWeb")  
+4. Install FastRWeb  
+	sh /usr/lib64/R/library/FastRWeb/install.sh  
+	cd /var/FastRWeb/web.R  
+	mkdir rdata  
+5. Make sure example FastRWeb file works  
+	/var/FastRWeb/web.R/example2.R should be visible at http://174.129.228.98/cgi-bin/R/example2  
+	(but replace the IP with your elastic IP)  
+6. clone classifier repo  
+	cd /src  
+	git clone https://github.com/aldenquimby/foodborne_classifier.git  
+7. Copy classifier files to FastRWeb  
+	cd foodborne_classifier  
+	sh ./move_files.sh  
+8. Done! [verify things work] (http://174.129.228.98/cgi-bin/R/fp_classifier?text=I%20ate%20some%20bad%20food%20at%20lunch%20and%20think%20I%20have%20food%20poisoning)  
+
 ###Classifier Code
 I've tried several packages. [RTextTools] (http://cran.r-project.org/web/packages/RTextTools/index.html) is a great resource, but a very simple n-gram based system [TextCat] (http://cran.r-project.org/web/packages/textcat/index.html) is sufficient for this project. It reads in a pre-trained model file on startup, and calculates a predicted classification based on the text input from the user.
 
