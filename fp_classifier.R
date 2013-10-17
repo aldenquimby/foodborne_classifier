@@ -12,15 +12,15 @@ run <- function(text){
     result <- textcat(text.cleansed, fp.model)
   }  
   if(is.na(result)){
-    result.print <- "don't know..."
+    result.print <- "dont_know"
   }else{
     if(result=="1"){
-      result.print <- "food poisoning tweet"
+      result.print <- "food_poisoning"
     }else{
       if(result=="0"){
-        result.print <- "not a food poisoning tweet"
+        result.print <- "not_food_poisoning"
       }else{
-        result.print <- "something is wrong..."
+        result.print <- "classifier_failed"
       }
     }
   }
