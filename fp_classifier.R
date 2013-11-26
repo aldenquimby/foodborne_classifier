@@ -5,7 +5,7 @@ library(stringr)
 run <- function(text){
   load("/var/FastRWeb/web.R/rdata/fp_model.Rdata")
   # if it starts with RT or has " RT @" in it, it's junk to Raed
-  if(grepl("^RT| RT @", text)){
+  if(grepl("^RT| RT @|[Bb]ieber", text)){
     result <- 0
   }else{    
     text.cleansed <- clean.text(text)
